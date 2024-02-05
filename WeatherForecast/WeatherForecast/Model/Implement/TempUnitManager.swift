@@ -9,7 +9,7 @@ final class TempUnitManager: TempUnitManagerService {
   private var tempUnit: TempUnit = .metric
   private let tempObservable: Observable<TempUnit> = .init(value: .metric)
   var currentValue: TempUnit {
-    return tempObservable.value ?? .imperial
+    return tempObservable.value ?? .metric
   }
 }
 

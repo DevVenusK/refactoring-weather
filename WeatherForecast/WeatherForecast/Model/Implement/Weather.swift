@@ -7,13 +7,13 @@
 import Foundation
 
 // MARK: - Weather JSON Format
-class WeatherJSON: Decodable {
+struct WeatherJSON: Decodable {
     let weatherForecast: [WeatherForecastInfo]
     let city: City
 }
 
 // MARK: - List
-class WeatherForecastInfo: Decodable {
+struct WeatherForecastInfo: Decodable {
     let dt: TimeInterval
     let main: MainInfo
     let weather: Weather
@@ -21,13 +21,13 @@ class WeatherForecastInfo: Decodable {
 }
 
 // MARK: - MainClass
-class MainInfo: Decodable {
+struct MainInfo: Decodable {
     let temp, feelsLike, tempMin, tempMax: Double
     let pressure, seaLevel, grndLevel, humidity, pop: Double
 }
 
 // MARK: - Weather
-class Weather: Decodable {
+struct Weather: Decodable {
     let id: Int
     let main: String
     let description: String
@@ -35,7 +35,7 @@ class Weather: Decodable {
 }
 
 // MARK: - City
-class City: Decodable {
+struct City: Decodable {
     let id: Int
     let name: String
     let coord: Coord
@@ -45,7 +45,7 @@ class City: Decodable {
 }
 
 // MARK: - Coord
-class Coord: Decodable {
+struct Coord: Decodable {
     let lat, lon: Double
 }
 
@@ -64,5 +64,27 @@ enum TempUnit: String {
     case .metric: return "섭씨"
     case .imperial: return "화씨"
     }
+  }
+}
+
+struct Temp {
+ private (set) var value: Double
+}
+
+struct MetricTemp {
+  var temp: Temp
+}
+
+struct ImperialTemp {
+  private var _temp: Temp
+  
+  var temp: Double {
+    return _temp.value
+  }
+  
+  init(from metricTemp: MetricTemp) {
+    let metricTemp = metricTemp.temp
+    let imperialTemp = (metricTemp.value * 9/5) + 32.0
+    _temp = Temp(value: imperialTemp)
   }
 }
